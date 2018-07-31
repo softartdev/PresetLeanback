@@ -14,7 +14,6 @@
 
 package tv.motorsport.presetleanback
 
-import java.util.Collections
 import java.util.Timer
 import java.util.TimerTask
 
@@ -38,7 +37,6 @@ import android.support.v17.leanback.widget.RowPresenter
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
@@ -48,12 +46,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
+import timber.log.Timber
 
 /**
  * Loads a grid of cards with movies to browse.
  */
 class MainFragment : BrowseFragment() {
-
     private val mHandler = Handler()
     private lateinit var mBackgroundManager: BackgroundManager
     private var mDefaultBackground: Drawable? = null
@@ -62,7 +60,7 @@ class MainFragment : BrowseFragment() {
     private var mBackgroundUri: String? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.i(TAG, "onCreate")
+        Timber.i("onCreate")
         super.onActivityCreated(savedInstanceState)
 
         prepareBackgroundManager()
@@ -76,12 +74,11 @@ class MainFragment : BrowseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy: " + mBackgroundTimer?.toString())
+        Timber.d("onDestroy: %s", mBackgroundTimer?.toString())
         mBackgroundTimer?.cancel()
     }
 
     private fun prepareBackgroundManager() {
-
         mBackgroundManager = BackgroundManager.getInstance(activity)
         mBackgroundManager.attach(activity.window)
         mDefaultBackground = ContextCompat.getDrawable(activity, R.drawable.default_background)
@@ -102,14 +99,14 @@ class MainFragment : BrowseFragment() {
     }
 
     private fun loadRows() {
-        val list = MovieList.list
+        val list = MovieList.list.toMutableList()
 
         val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         val cardPresenter = CardPresenter()
 
         for (i in 0 until NUM_ROWS) {
             if (i != 0) {
-                Collections.shuffle(list)
+                list.shuffle()
             }
             val listRowAdapter = ArrayObjectAdapter(cardPresenter)
             for (j in 0 until NUM_COLS) {
@@ -149,7 +146,7 @@ class MainFragment : BrowseFragment() {
                 row: Row) {
 
             if (item is Movie) {
-                Log.d(TAG, "Item: " + item.toString())
+                Timber.d("Item: %s", item.toString())
                 val intent = Intent(activity, DetailsActivity::class.java)
                 intent.putExtra(DetailsActivity.MOVIE, item)
 
@@ -204,7 +201,6 @@ class MainFragment : BrowseFragment() {
     }
 
     private inner class UpdateBackgroundTask : TimerTask() {
-
         override fun run() {
             mHandler.post { updateBackground(mBackgroundUri) }
         }
@@ -230,12 +226,10 @@ class MainFragment : BrowseFragment() {
     }
 
     companion object {
-        private val TAG = "MainFragment"
-
-        private val BACKGROUND_UPDATE_DELAY = 300
-        private val GRID_ITEM_WIDTH = 200
-        private val GRID_ITEM_HEIGHT = 200
-        private val NUM_ROWS = 6
-        private val NUM_COLS = 15
+        private const val BACKGROUND_UPDATE_DELAY = 300
+        private const val GRID_ITEM_WIDTH = 200
+        private const val GRID_ITEM_HEIGHT = 200
+        private const val NUM_ROWS = 6
+        private const val NUM_COLS = 15
     }
 }

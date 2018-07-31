@@ -18,10 +18,9 @@ import android.graphics.drawable.Drawable
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.ViewGroup
-
 import com.bumptech.glide.Glide
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 /**
@@ -34,7 +33,7 @@ class CardPresenter : Presenter() {
     private var sDefaultBackgroundColor: Int by Delegates.notNull()
 
     override fun onCreateViewHolder(parent: ViewGroup): Presenter.ViewHolder {
-        Log.d(TAG, "onCreateViewHolder")
+        Timber.d("onCreateViewHolder")
 
         sDefaultBackgroundColor = ContextCompat.getColor(parent.context, R.color.default_background)
         sSelectedBackgroundColor = ContextCompat.getColor(parent.context, R.color.selected_background)
@@ -57,7 +56,7 @@ class CardPresenter : Presenter() {
         val movie = item as Movie
         val cardView = viewHolder.view as ImageCardView
 
-        Log.d(TAG, "onBindViewHolder")
+        Timber.d("onBindViewHolder")
         if (movie.cardImageUrl != null) {
             cardView.titleText = movie.title
             cardView.contentText = movie.studio
@@ -71,7 +70,7 @@ class CardPresenter : Presenter() {
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
-        Log.d(TAG, "onUnbindViewHolder")
+        Timber.d("onUnbindViewHolder")
         val cardView = viewHolder.view as ImageCardView
         // Remove references to images so that the garbage collector can free up memory
         cardView.badgeImage = null
@@ -87,9 +86,7 @@ class CardPresenter : Presenter() {
     }
 
     companion object {
-        private val TAG = "CardPresenter"
-
-        private val CARD_WIDTH = 313
-        private val CARD_HEIGHT = 176
+        private const val CARD_WIDTH = 313
+        private const val CARD_HEIGHT = 176
     }
 }

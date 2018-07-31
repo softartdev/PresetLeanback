@@ -20,32 +20,15 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v17.leanback.app.DetailsFragment
 import android.support.v17.leanback.app.DetailsFragmentBackgroundController
-import android.support.v17.leanback.widget.Action
-import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.ClassPresenterSelector
-import android.support.v17.leanback.widget.DetailsOverviewRow
-import android.support.v17.leanback.widget.FullWidthDetailsOverviewRowPresenter
-import android.support.v17.leanback.widget.FullWidthDetailsOverviewSharedElementHelper
-import android.support.v17.leanback.widget.HeaderItem
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.ListRow
-import android.support.v17.leanback.widget.ListRowPresenter
-import android.support.v17.leanback.widget.OnActionClickedListener
-import android.support.v17.leanback.widget.OnItemViewClickedListener
-import android.support.v17.leanback.widget.Presenter
-import android.support.v17.leanback.widget.Row
-import android.support.v17.leanback.widget.RowPresenter
+import android.support.v17.leanback.widget.*
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.widget.Toast
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
-
-import java.util.Collections
+import timber.log.Timber
 
 /**
  * A wrapper fragment for leanback details screens.
@@ -60,7 +43,7 @@ class VideoDetailsFragment : DetailsFragment() {
     private lateinit var mAdapter: ArrayObjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "onCreate DetailsFragment")
+        Timber.d("onCreate DetailsFragment")
         super.onCreate(savedInstanceState)
 
         mDetailsBackground = DetailsFragmentBackgroundController(this)
@@ -98,7 +81,7 @@ class VideoDetailsFragment : DetailsFragment() {
     }
 
     private fun setupDetailsOverviewRow() {
-        Log.d(TAG, "doInBackground: " + mSelectedMovie?.toString())
+        Timber.d("doInBackground: " + mSelectedMovie?.toString())
         val row = DetailsOverviewRow(mSelectedMovie)
         row.imageDrawable = ContextCompat.getDrawable(activity, R.drawable.default_background)
         val width = convertDpToPixel(activity, DETAIL_THUMB_WIDTH)
@@ -110,7 +93,7 @@ class VideoDetailsFragment : DetailsFragment() {
                 .into<SimpleTarget<GlideDrawable>>(object : SimpleTarget<GlideDrawable>(width, height) {
                     override fun onResourceReady(resource: GlideDrawable,
                                                  glideAnimation: GlideAnimation<in GlideDrawable>) {
-                        Log.d(TAG, "details overview card image url ready: " + resource)
+                        Timber.d("details overview card image url ready: %s", resource)
                         row.imageDrawable = resource
                         mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size())
                     }
@@ -165,9 +148,9 @@ class VideoDetailsFragment : DetailsFragment() {
 
     private fun setupRelatedMovieListRow() {
         val subcategories = arrayOf(getString(R.string.related_movies))
-        val list = MovieList.list
+        val list = MovieList.list.toMutableList()
 
-        Collections.shuffle(list)
+        list.shuffle()
         val listRowAdapter = ArrayObjectAdapter(CardPresenter())
         for (j in 0 until NUM_COLS) {
             listRowAdapter.add(list[j % 5])
@@ -190,7 +173,7 @@ class VideoDetailsFragment : DetailsFragment() {
                 rowViewHolder: RowPresenter.ViewHolder,
                 row: Row) {
             if (item is Movie) {
-                Log.d(TAG, "Item: " + item.toString())
+                Timber.d("Item: " + item.toString())
                 val intent = Intent(activity, DetailsActivity::class.java)
                 intent.putExtra(resources.getString(R.string.movie), mSelectedMovie)
 
@@ -206,15 +189,13 @@ class VideoDetailsFragment : DetailsFragment() {
     }
 
     companion object {
-        private val TAG = "VideoDetailsFragment"
+        private const val ACTION_WATCH_TRAILER = 1L
+        private const val ACTION_RENT = 2L
+        private const val ACTION_BUY = 3L
 
-        private val ACTION_WATCH_TRAILER = 1L
-        private val ACTION_RENT = 2L
-        private val ACTION_BUY = 3L
+        private const val DETAIL_THUMB_WIDTH = 274
+        private const val DETAIL_THUMB_HEIGHT = 274
 
-        private val DETAIL_THUMB_WIDTH = 274
-        private val DETAIL_THUMB_HEIGHT = 274
-
-        private val NUM_COLS = 10
+        private const val NUM_COLS = 10
     }
 }
