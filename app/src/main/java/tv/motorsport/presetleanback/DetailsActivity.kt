@@ -14,13 +14,13 @@
 
 package tv.motorsport.presetleanback
 
-import android.app.Activity
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 
 /**
  * Details activity class that loads [VideoDetailsFragment] class.
  */
-class DetailsActivity : Activity() {
+class DetailsActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

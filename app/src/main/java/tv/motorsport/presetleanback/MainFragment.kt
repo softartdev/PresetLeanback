@@ -15,6 +15,7 @@
 package tv.motorsport.presetleanback
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -31,9 +32,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.animation.GlideAnimation
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import timber.log.Timber
 import java.util.*
 
@@ -169,17 +170,16 @@ class MainFragment : BrowseSupportFragment() {
     private fun updateBackground(uri: String?) {
         val width = mMetrics.widthPixels
         val height = mMetrics.heightPixels
-        Glide.with(activity)
+        Glide.with(context as Context)
                 .load(uri)
-                .centerCrop()
-                .error(mDefaultBackground)
-                .into<SimpleTarget<GlideDrawable>>(
-                        object : SimpleTarget<GlideDrawable>(width, height) {
-                            override fun onResourceReady(resource: GlideDrawable,
-                                                         glideAnimation: GlideAnimation<in GlideDrawable>) {
-                                mBackgroundManager.drawable = resource
-                            }
-                        })
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .error(mDefaultBackground))
+                .into(object : SimpleTarget<Drawable>(width, height) {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        mBackgroundManager.drawable = resource
+                    }
+                })
         mBackgroundTimer?.cancel()
     }
 
