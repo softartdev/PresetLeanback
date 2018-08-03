@@ -78,7 +78,7 @@ class MainFragment : BrowseSupportFragment() {
     private fun setupUIElements() {
         title = getString(R.string.browse_title)
         // over title
-        headersState = BrowseSupportFragment.HEADERS_ENABLED
+        headersState = BrowseSupportFragment.HEADERS_HIDDEN
         isHeadersTransitionOnBackEnabled = true
 
         // set fastLane (or headers) background color
