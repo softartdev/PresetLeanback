@@ -33,9 +33,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import timber.log.Timber
+import tv.motorsport.presetleanback.title.BackgroundTarget
 import java.util.*
 
 /**
@@ -48,6 +47,7 @@ class MainFragment : BrowseSupportFragment() {
     private lateinit var mMetrics: DisplayMetrics
     private var mBackgroundTimer: Timer? = null
     private var mBackgroundUri: String? = null
+    private lateinit var mBackgroundTarget: BackgroundTarget
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         Timber.i("onCreate")
@@ -74,6 +74,9 @@ class MainFragment : BrowseSupportFragment() {
         mDefaultBackground = ContextCompat.getDrawable(activity as Activity, R.drawable.default_background)
         mMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(mMetrics)
+        val width = mMetrics.widthPixels
+        val height = mMetrics.heightPixels
+        mBackgroundTarget = BackgroundTarget(mBackgroundManager, width, height)
     }
 
     private fun setupUIElements() {
@@ -168,18 +171,12 @@ class MainFragment : BrowseSupportFragment() {
     }
 
     private fun updateBackground(uri: String?) {
-        val width = mMetrics.widthPixels
-        val height = mMetrics.heightPixels
         Glide.with(context as Context)
                 .load(uri)
                 .apply(RequestOptions()
                         .centerCrop()
                         .error(mDefaultBackground))
-                .into(object : SimpleTarget<Drawable>(width, height) {
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                        mBackgroundManager.drawable = resource
-                    }
-                })
+                .into(mBackgroundTarget)
         mBackgroundTimer?.cancel()
     }
 
