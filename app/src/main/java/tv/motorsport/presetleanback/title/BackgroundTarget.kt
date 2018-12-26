@@ -1,7 +1,7 @@
 package tv.motorsport.presetleanback.title
 
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.app.BackgroundManager
+import androidx.leanback.app.BackgroundManager
 import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target

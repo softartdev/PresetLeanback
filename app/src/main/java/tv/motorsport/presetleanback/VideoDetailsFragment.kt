@@ -20,11 +20,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v17.leanback.app.DetailsSupportFragment
-import android.support.v17.leanback.app.DetailsSupportFragmentBackgroundController
-import android.support.v17.leanback.widget.*
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
+import androidx.leanback.app.DetailsSupportFragment
+import androidx.leanback.app.DetailsSupportFragmentBackgroundController
+import androidx.leanback.widget.*
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

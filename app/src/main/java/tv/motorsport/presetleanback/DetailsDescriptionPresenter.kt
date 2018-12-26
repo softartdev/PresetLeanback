@@ -14,7 +14,7 @@
 
 package tv.motorsport.presetleanback
 
-import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter
+import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
 
 class DetailsDescriptionPresenter : AbstractDetailsDescriptionPresenter() {
 

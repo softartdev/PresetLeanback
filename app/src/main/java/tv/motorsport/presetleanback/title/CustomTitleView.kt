@@ -15,8 +15,8 @@ package tv.motorsport.presetleanback.title
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.SearchOrbView
-import android.support.v17.leanback.widget.TitleViewAdapter
+import androidx.leanback.widget.SearchOrbView
+import androidx.leanback.widget.TitleViewAdapter
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
