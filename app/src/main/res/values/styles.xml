@@ -2,4 +2,9 @@
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.Leanback" />
+
+    <style name="AppTheme.CustomTitle" parent="Theme.Leanback.Browse">
+        <item name="browseTitleViewLayout">@layout/titleview</item>
+        <item name="browseRowsMarginTop">120dp</item>
+    </style>
 </resources>

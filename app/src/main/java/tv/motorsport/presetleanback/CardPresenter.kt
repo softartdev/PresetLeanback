@@ -15,11 +15,12 @@
 package tv.motorsport.presetleanback
 
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.Presenter
-import android.support.v4.content.ContextCompat
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.Presenter
+import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import timber.log.Timber
 import kotlin.properties.Delegates
 
@@ -63,8 +64,9 @@ class CardPresenter : Presenter() {
             cardView.setMainImageDimensions(CARD_WIDTH, CARD_HEIGHT)
             Glide.with(viewHolder.view.context)
                     .load(movie.cardImageUrl)
-                    .centerCrop()
-                    .error(mDefaultCardImage)
+                    .apply(RequestOptions()
+                            .centerCrop()
+                            .error(mDefaultCardImage))
                     .into(cardView.mainImageView)
         }
     }
