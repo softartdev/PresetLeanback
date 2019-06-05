@@ -61,7 +61,7 @@ class CustomTitleView constructor(context: Context, attrs: AttributeSet?, defSty
         /**
          * Sets the listener to be called when the search affordance is clicked.
          */
-        override fun setOnSearchClickedListener(listener: View.OnClickListener?) {
+        override fun setOnSearchClickedListener(listener: OnClickListener?) {
             mHasSearchListener = listener != null
             searchOrbView.setOnOrbClickedListener(listener)
             updateSearchOrbViewVisiblity()
@@ -126,7 +126,7 @@ class CustomTitleView constructor(context: Context, attrs: AttributeSet?, defSty
          */
         override fun updateComponentsVisibility(flags: Int) {
             mFlags = flags
-            if (flags and TitleViewAdapter.BRANDING_VIEW_VISIBLE == TitleViewAdapter.BRANDING_VIEW_VISIBLE) {
+            if (flags and BRANDING_VIEW_VISIBLE == BRANDING_VIEW_VISIBLE) {
                 updateBadgeVisibility()
             } else {
                 badgeView.visibility = View.GONE

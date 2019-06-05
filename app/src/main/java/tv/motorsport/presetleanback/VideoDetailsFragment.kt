@@ -20,15 +20,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.leanback.app.DetailsSupportFragment
 import androidx.leanback.app.DetailsSupportFragmentBackgroundController
 import androidx.leanback.widget.*
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import timber.log.Timber
 
@@ -74,11 +74,12 @@ class VideoDetailsFragment : DetailsSupportFragment() {
                         .centerCrop()
                         .error(R.drawable.default_background))
                 .load(movie?.backgroundImageUrl)
-                .into(object : SimpleTarget<Bitmap>(){
+                .into(object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         mDetailsBackground.coverBitmap = resource
                         mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size())
                     }
+                    override fun onLoadCleared(placeholder: Drawable?) = Unit
                 })
     }
 
@@ -93,12 +94,13 @@ class VideoDetailsFragment : DetailsSupportFragment() {
                 .apply(RequestOptions()
                         .centerCrop()
                         .error(R.drawable.default_background))
-                .into(object : SimpleTarget<Drawable>(width, height) {
+                .into(object : CustomTarget<Drawable>(width, height) {
                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                         Timber.d("details overview card image url ready: %s", resource)
                         row.imageDrawable = resource
                         mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size())
                     }
+                    override fun onLoadCleared(placeholder: Drawable?) = Unit
                 })
 
         val actionAdapter = ArrayObjectAdapter()
